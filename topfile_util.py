@@ -4,11 +4,11 @@
 
 Print out targets with matching roles:
 
-tfu.py (-f ./pillar/top.sls) targets <ROLE1 ROLE2 ... ROLEN>
+tfu [-f ./pillar/top.sls] targets <ROLE1 ROLE2 ... ROLEN>
 
 Print out nodes with matching roles:
 
-tfu.py (-f ./pillar/top.sls) nodes -o (pretty|txt|json|yaml) <NODELIST> <ROLE1 ROLE2 ... ROLEN>
+tfu [-f ./pillar/top.sls] nodes [-o (pretty|txt|json|yaml)] <NODELIST> <ROLE1 ROLE2 ... ROLEN>
 
 
 Example:
@@ -33,9 +33,10 @@ except ImportError:
 
 
 class Topfile(object):
-    def __init__(self, path='./pillar/top.sls'):
-        self.path = Path(path)
-        self.text = self.path.read_text()
+    def __init__(self, path='./top.sls'):
+        # print(path.name)
+        self.path = Path(path.name)
+        self.text = path.read()
         # stores whole pillar in yaml, everything is under `base` though
         self.yaml = yaml.load(self.text, Loader=Loader)
 
@@ -72,7 +73,7 @@ class Topfile(object):
 
 
 @click.group()
-@click.option('--topfile', default='pillar/top.sls', help="Path to topfile")
+@click.option('--topfile', '-t', default='./top.sls', type=click.File('r'), help="Path to topfile")
 @click.pass_context
 def cli(ctx, topfile):
     ctx.obj = Topfile(topfile)

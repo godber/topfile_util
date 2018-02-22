@@ -9,6 +9,10 @@ setup(
         'click',
         'pyyaml',
     ],
+    author="Austin Godber",
+    author_email="godber@uberhip.com",
+    description="SaltStack Topfile Utilities",
+    keywords="saltstack salt topfile utility test check verify",
     entry_points='''
         [console_scripts]
         tfu=topfile_util:cli
